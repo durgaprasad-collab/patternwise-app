@@ -1,0 +1,45 @@
+{% if results %}
+
+{% for result in results %}
+
+<form
+    hx-post="/onboarding/select-location"
+    hx-target="#onboarding-step"
+    hx-swap="innerHTML"
+>
+
+    <input type="hidden"
+           name="location_name"
+           value="{{ result.name }}">
+
+    <input type="hidden"
+           name="latitude"
+           value="{{ result.latitude }}">
+
+    <input type="hidden"
+           name="longitude"
+           value="{{ result.longitude }}">
+
+    <button
+        type="submit"
+        class="glass-card w-full rounded-2xl p-5 text-left transition hover:bg-white/10"
+    >
+
+        <div class="text-white">
+            {{ result.name }}
+        </div>
+
+        <div class="mt-2 text-sm text-slate-400">
+            Lat: {{ result.latitude }}
+            ·
+            Long: {{ result.longitude }}
+        </div>
+
+    </button>
+
+</form>
+{% endfor %}
+
+{% else %}
+
+{% endif %}

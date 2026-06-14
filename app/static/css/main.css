@@ -1,0 +1,117 @@
+body {
+    background: #06131f;
+    overflow-x: hidden;
+}
+
+/* HERO GLOW */
+
+.hero-glow {
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(circle at top,
+            rgba(56, 189, 248, 0.15),
+            transparent 40%),
+        radial-gradient(circle at bottom,
+            rgba(251, 191, 36, 0.08),
+            transparent 40%);
+
+    filter: blur(80px);
+}
+
+/* GLASS CARD */
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.05);
+
+    backdrop-filter: blur(20px);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+/* SACRED GRID */
+
+.sacred-grid {
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px,
+            transparent 1px),
+        linear-gradient(90deg,
+            rgba(255, 255, 255, 0.03) 1px,
+            transparent 1px);
+
+    background-size: 60px 60px;
+
+    mask-image:
+        radial-gradient(circle at center, black, transparent 80%);
+}
+
+/* PARTICLES */
+
+.particle {
+    position: absolute;
+
+    width: 2px;
+    height: 2px;
+
+    background: rgba(255, 255, 255, 0.4);
+
+    border-radius: 999px;
+
+    animation: floatParticle 20s linear infinite;
+    left: calc(100% * var(--x));
+    animation-duration: calc(10s + 20s * var(--speed));
+    animation-delay: calc(-20s * var(--delay));
+}
+
+@keyframes floatParticle {
+
+    from {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(-100vh);
+        opacity: 0;
+    }
+}
+
+/* GLOW TEXT */
+
+.glow-text {
+    text-shadow:
+        0 0 20px rgba(255, 255, 255, 0.15),
+        0 0 40px rgba(56, 189, 248, 0.15);
+}
+
+.profile-table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 800px;
+}
+
+.profile-table td {
+    padding: 10px;
+    border-bottom: 1px solid #2c3e50;
+}
+
+.profile-table td:first-child {
+    font-weight: bold;
+    width: 180px;
+}

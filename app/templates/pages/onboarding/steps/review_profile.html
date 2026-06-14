@@ -1,0 +1,56 @@
+<div class="space-y-6">
+
+    <div class="bg-white/5 rounded-xl p-6">
+        <h3 class="text-lg font-semibold mb-4">
+            Review Birth Profile
+        </h3>
+
+        <div class="space-y-2">
+
+            <p>
+                <span class="font-medium">Birth Date:</span>
+                {{ birth_date }}
+            </p>
+
+            <p>
+                <span class="font-medium">Birth Time:</span>
+                {{ birth_time }}
+            </p>
+
+            <p>
+                <span class="font-medium">Birth Place:</span>
+                {{ location.name }}
+            </p>
+
+            <p>
+                <span class="font-medium">Latitude:</span>
+                {{ location.latitude }}
+            </p>
+
+            <p>
+                <span class="font-medium">Longitude:</span>
+                {{ location.longitude }}
+            </p>
+
+            <p>
+                <span class="font-medium">Timezone:</span>
+                {{ location.timezone }}
+            </p>
+
+        </div>
+    </div>
+
+    <form
+        hx-post="/onboarding/save-profile"
+        hx-target="#onboarding-step"
+        hx-swap="innerHTML"
+    >
+        <button
+            type="submit"
+            class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500"
+        >
+            Save Profile
+        </button>
+    </form>
+
+</div>

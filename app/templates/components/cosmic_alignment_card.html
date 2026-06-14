@@ -1,0 +1,44 @@
+<div class="card mt-4">
+
+    <h2>Your Cosmic Alignment Profile</h2>
+
+    <h3>
+        Natural Potential Index:
+        {{ cosmic_profile.natural_potential_index }}/100
+    </h3>
+
+    <hr>
+
+    <h4>Core Gifts</h4>
+
+    <ul>
+    {% for item in cosmic_profile.core_gifts %}
+        <li>{{ item }}</li>
+    {% endfor %}
+    </ul>
+
+    <h4>Growth Areas</h4>
+
+    <ul>
+    {% for item in cosmic_profile.growth_edges %}
+        <li>{{ item }}</li>
+    {% endfor %}
+    </ul>
+
+    <h4>Untapped Potential</h4>
+
+    <ul>
+    {% for item in cosmic_profile.untapped_potential %}
+        <li>{{ item }}</li>
+    {% endfor %}
+    </ul>
+
+    <h4>Energy Drains</h4>
+
+    <ul>
+    {% for item in cosmic_profile.energy_drains %}
+        <li>{{ item }}</li>
+    {% endfor %}
+    </ul>
+
+</div>

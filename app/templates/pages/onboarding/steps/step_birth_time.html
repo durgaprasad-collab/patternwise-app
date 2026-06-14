@@ -1,0 +1,43 @@
+<form
+    hx-post="/onboarding/birth-time"
+    hx-target="#onboarding-step"
+    hx-swap="innerHTML"
+    class="space-y-10"
+>
+
+    <div>
+
+        <label class="mb-4 block text-sm uppercase tracking-[0.2em] text-slate-400">
+
+            Birth Time
+
+        </label>
+
+        <input
+            type="time"
+            name="birth_time"
+            required
+            class="w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-5 text-lg text-white outline-none transition focus:border-cyan-300"
+        >
+
+    </div>
+
+    <div class="flex justify-between">
+
+        <button
+            type="button"
+            class="rounded-2xl border border-white/10 bg-white/5 px-8 py-4 text-sm text-white"
+        >
+            Back
+        </button>
+
+        <button
+            type="submit"
+            class="rounded-2xl bg-cyan-400/90 px-8 py-4 text-sm font-medium text-slate-950 transition hover:bg-cyan-300"
+        >
+            Continue
+        </button>
+
+    </div>
+
+</form>

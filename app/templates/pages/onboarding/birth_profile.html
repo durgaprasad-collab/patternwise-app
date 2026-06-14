@@ -1,0 +1,69 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+<section class="relative min-h-screen overflow-hidden bg-[#06131f]">
+
+    <!-- Atmosphere -->
+    <div class="hero-glow"></div>
+    <div class="sacred-grid opacity-20"></div>
+
+    <div class="relative z-10 flex min-h-screen items-center justify-center px-6 py-20">
+
+        <div class="glass-card w-full max-w-3xl rounded-[2rem] p-10">
+
+            <!-- Header -->
+
+            <div class="mb-14">
+
+                <p class="text-sm uppercase tracking-[0.3em] text-cyan-300/70">
+                    Symbolic Calibration
+                </p>
+
+                <h1 class="mt-5 text-5xl font-semibold tracking-tight text-white">
+
+                    Create Your<br>
+                    Birth Profile
+
+                </h1>
+
+                <p class="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
+
+                    Your birth details become the symbolic seed
+                    from which PatternWise generates deeper
+                    astrological and behavioral intelligence.
+
+                </p>
+
+            </div>
+
+            <!-- Progress -->
+
+            <div class="mb-12">
+
+                <div class="flex items-center gap-4">
+
+                    <div class="h-2 flex-1 rounded-full bg-cyan-300"></div>
+                    <div class="h-2 flex-1 rounded-full bg-white/10"></div>
+                    <div class="h-2 flex-1 rounded-full bg-white/10"></div>
+                    <div class="h-2 flex-1 rounded-full bg-white/10"></div>
+
+                </div>
+
+            </div>
+
+            <!-- STEP CONTENT -->
+
+            <div id="onboarding-step">
+
+                {% include "pages/onboarding/steps/step_birth_date.html" %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

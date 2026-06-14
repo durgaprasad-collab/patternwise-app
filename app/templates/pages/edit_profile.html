@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Edit Birth Profile</h2>
+
+<form method="post" action="/profile/edit">
+
+    <label>Date of Birth</label>
+    <input
+        type="date"
+        name="birth_date"
+        value="{{ profile.birth_date }}"
+    >
+
+    <label>Birth Time</label>
+    <input
+        type="time"
+        name="birth_time"
+        value="{{ profile.birth_time }}"
+    >
+
+    <label>Location</label>
+    <input
+        type="text"
+        name="location_name"
+        value="{{ profile.location_name }}"
+    >
+
+    <button type="submit">
+        Save Profile
+    </button>
+
+</form>
+
+{% endblock %}

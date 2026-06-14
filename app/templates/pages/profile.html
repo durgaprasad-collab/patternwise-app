@@ -1,0 +1,68 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+<div class="glass-card rounded-3xl p-8 max-w-3xl">
+
+    <h1 class="text-3xl font-semibold text-white mb-8">
+        Birth Profile
+    </h1>
+
+    <div class="space-y-4 text-white">
+
+        <p>
+            <strong>Name:</strong>
+            {{ db_user.full_name or user.name }}
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            {{ user.email }}
+        </p>
+
+        <p>
+            <strong>Birth Date:</strong>
+            {{ profile.birth_date }}
+        </p>
+
+        <p>
+            <strong>Birth Time:</strong>
+            {{ profile.birth_time }}
+        </p>
+
+        <p>
+            <strong>Location:</strong>
+            {{ profile.location_name }}
+        </p>
+
+        <p>
+            <strong>Latitude:</strong>
+            {{ profile.latitude }}
+        </p>
+
+        <p>
+            <strong>Longitude:</strong>
+            {{ profile.longitude }}
+        </p>
+
+        <p>
+            <strong>Timezone:</strong>
+            {{ profile.timezone }}
+        </p>
+
+    </div>
+
+    <div class="mt-8">
+
+        <a
+            href="/onboarding/birth-profile"
+            class="rounded-xl bg-indigo-600 px-6 py-3 text-white hover:bg-indigo-500"
+        >
+            Edit Birth Profile
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
