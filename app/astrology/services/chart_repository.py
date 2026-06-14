@@ -49,13 +49,13 @@ class ChartRepository:
         return chart_record
        finally:
         db.close()
-@staticmethod
-def get_latest_chart(profile_id):
-    db = SessionLocal()
-    try:
-           return (
-            db.query(ChartCalculation)
-            .filter(
+        @staticmethod
+        def get_latest_chart(profile_id):
+            db = SessionLocal()
+            try:
+                return (
+                db.query(ChartCalculation)
+                .filter(
                 ChartCalculation.profile_id == profile_id
             )
             .order_by(
@@ -63,5 +63,5 @@ def get_latest_chart(profile_id):
             )
             .first()
         )
-    finally:
-            db.close()
+            finally:
+                db.close()
