@@ -53,50 +53,70 @@ async def login_google(request: Request):
 @router.get("/auth/callback")
 async def auth_callback(request: Request):
 
-    token = await oauth.google.authorize_access_token(request)
-
-    google_user = token.get("userinfo")
-
-    db: Session = SessionLocal()
-
     try:
 
-        existing_user = (
-            db.query(User)
-            .filter(
-                User.email == google_user["email"]
-            )
-            .first()
+        token = await oauth.google.authorize_access_token(
+            request
         )
 
-        if not existing_user:
+        print("TOKEN RECEIVED")
+        print(token)
 
-            existing_user = User(
-                google_id=google_user["sub"],
-                email=google_user["email"],
-                full_name=google_user["name"],
-                profile_picture=google_user.get("picture")
+        google_user = token.get("userinfo")
+
+        print("GOOGLE USER")
+        print(google_user)
+
+        db: Session = SessionLocal()
+
+        try:
+
+            existing_user = (
+                db.query(User)
+                .filter(
+                    User.email == google_user["email"]
+                )
+                .first()
             )
 
-            db.add(existing_user)
-            db.commit()
-            db.refresh(existing_user)
+            if not existing_user:
 
-        request.session["user"] = {
-            "name": google_user.get("name"),
-            "email": google_user.get("email"),
-            "picture": google_user.get("picture")
-        }
+                existing_user = User(
+                    google_id=google_user["sub"],
+                    email=google_user["email"],
+                    full_name=google_user["name"],
+                    profile_picture=google_user.get("picture")
+                )
 
-        request.session["user_id"] = existing_user.id
+                db.add(existing_user)
+                db.commit()
+                db.refresh(existing_user)
 
-        return RedirectResponse(
-            url="/dashboard",
-            status_code=303
-        )
+            request.session["user"] = {
+                "name": google_user.get("name"),
+                "email": google_user.get("email"),
+                "picture": google_user.get("picture")
+            }
 
-    finally:
-        db.close()
+            request.session["user_id"] = existing_user.id
+
+            return RedirectResponse(
+                url="/dashboard",
+                status_code=303
+            )
+
+        finally:
+            db.close()
+
+    except Exception as e:
+
+        print("=" * 50)
+        print("GOOGLE CALLBACK ERROR")
+        print(type(e))
+        print(e)
+        print("=" * 50)
+
+        raise
 
    
 
