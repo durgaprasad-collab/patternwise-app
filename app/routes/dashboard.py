@@ -36,6 +36,11 @@ async def dashboard(request: Request):
     )
     .first()
 )
+    if not profile:
+     return RedirectResponse(
+        url="/onboarding/birth-profile",
+        status_code=303
+    )
     print(
     "PROFILE ID:",
     profile.id if profile else None
