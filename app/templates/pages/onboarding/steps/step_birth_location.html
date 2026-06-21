@@ -1,4 +1,7 @@
 <form
+    hx-get="/onboarding/location-search"
+    hx-target="#location-results"
+    hx-swap="innerHTML"
     class="space-y-10"
 >
 
@@ -16,15 +19,17 @@
             placeholder="Search city..."
             autocomplete="on"
 
-            hx-get="/onboarding/location-search"
-            hx-trigger="keyup changed delay:400ms"
-            hx-target="#location-results"
-            hx-swap="innerHTML"
-
             class="w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-5 text-lg text-white outline-none transition focus:border-cyan-300"
         >
 
     </div>
+
+    <button
+        type="submit"
+        class="rounded-2xl bg-cyan-400/90 px-8 py-4 text-sm font-medium text-slate-950 transition hover:bg-cyan-300"
+    >
+        Search locations
+    </button>
 
     <div
         id="location-results"

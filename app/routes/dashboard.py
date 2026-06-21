@@ -43,8 +43,6 @@ async def dashboard(request: Request):
                 status_code=303
             )
 
-        print("DB USER:", db_user.id)
-
         profile = (
             db.query(BirthProfile)
             .filter(
@@ -55,48 +53,14 @@ async def dashboard(request: Request):
 
         if not profile:
 
-            print("NO PROFILE FOUND")
-
             return RedirectResponse(
                 url="/onboarding/birth-profile",
                 status_code=303
             )
 
-        print("PROFILE ID:", profile.id)
-
         chart_record = ChartRepository.get_latest_chart(
             profile.id
         )
-
-        print(
-            "CHART FOUND:",
-            chart_record is not None
-        )
-
-        if chart_record:
-
-            print(
-                "CHART ID:",
-                chart_record.id
-            )
-
-            print(
-                "\nCOSMIC PROFILE SENT TO TEMPLATE"
-            )
-
-            print(
-                chart_record.profile_json
-            )
-
-            print(
-                "===============================\n"
-            )
-
-        else:
-
-            print(
-                "NO CHART RECORD FOUND"
-            )
 
         return templates.TemplateResponse(
             request=request,

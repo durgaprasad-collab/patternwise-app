@@ -1,7 +1,7 @@
+import logging
+
 from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
-from authlib.integrations.starlette_client import OAuthError
-from httpx import request
+from fastapi.responses import RedirectResponse
 from app.auth.oauth import oauth
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -13,6 +13,7 @@ templates = Jinja2Templates(
     directory="app/templates"
 )
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 
 @router.get("/login")
@@ -43,8 +44,6 @@ async def login_google(request: Request):
 
     redirect_uri = request.url_for("auth_callback")
 
-    print("REDIRECT URI:", redirect_uri)
-
     return await oauth.google.authorize_redirect(
         request,
         redirect_uri
@@ -59,13 +58,14 @@ async def auth_callback(request: Request):
             request
         )
 
-        print("TOKEN RECEIVED")
-        print(token)
-
         google_user = token.get("userinfo")
 
-        print("GOOGLE USER")
-        print(google_user)
+        if not google_user or not google_user.get("email"):
+            logger.warning("Google OAuth response did not include user info")
+            return RedirectResponse(
+                url="/login?error=oauth",
+                status_code=303,
+            )
 
         db: Session = SessionLocal()
 
@@ -108,15 +108,12 @@ async def auth_callback(request: Request):
         finally:
             db.close()
 
-    except Exception as e:
-
-        print("=" * 50)
-        print("GOOGLE CALLBACK ERROR")
-        print(type(e))
-        print(e)
-        print("=" * 50)
-
-        raise
+    except Exception:
+        logger.exception("Google OAuth callback failed")
+        return RedirectResponse(
+            url="/login?error=oauth",
+            status_code=303,
+        )
 
    
 

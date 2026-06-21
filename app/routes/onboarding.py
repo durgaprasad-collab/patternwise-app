@@ -1,4 +1,4 @@
-import profile
+import logging
 
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse, HTMLResponse
@@ -13,6 +13,7 @@ from app.models.birth_profile import BirthProfile
 from app.astrology.services.chart_service import ChartService
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 templates = Jinja2Templates(
 directory="app/templates"
@@ -81,9 +82,7 @@ async def location_search(
 
     search_text = query or location
 
-    print("QUERY:", search_text)
-
-    results = search_city(search_text)
+    results = search_city(search_text) if len(search_text.strip()) >= 3 else []
 
     return templates.TemplateResponse(
         request=request,
@@ -111,9 +110,6 @@ async def select_location(
         "timezone": timezone_name,
     }
 
-    print("\nLOCATION SAVED:")
-    print(request.session["location"])
-
     return templates.TemplateResponse(
         request=request,
         name="pages/onboarding/steps/review_profile.html",
@@ -127,9 +123,6 @@ async def select_location(
 
 @router.get("/onboarding/review")
 async def review_profile(request: Request):
-
-    print("\nSESSION DATA:")
-    print(request.session)
 
     return templates.TemplateResponse(
     request=request,
@@ -152,8 +145,6 @@ async def save_profile(request: Request):
 
         user_id = request.session.get("user_id")
 
-        print("SESSION USER ID:", user_id)
-
         if not user_id:
             return RedirectResponse(
                 url="/login",
@@ -166,8 +157,6 @@ async def save_profile(request: Request):
             .filter(BirthProfile.user_id == user_id)
             .first()
         )
-        print("USER ID:", user_id)
-        print("EXISTING PROFILE:", existing_profile)
         if existing_profile:
             existing_profile.birth_date =datetime.strptime(request.session.get("birth_date"), "%Y-%m-%d").date()
             existing_profile.birth_time = datetime.strptime(request.session.get("birth_time"), "%H:%M").time()
@@ -177,7 +166,6 @@ async def save_profile(request: Request):
             existing_profile.timezone = location["timezone"]
 
             profile = existing_profile
-            print ("UPDATING EXISTING PROFILE:", profile.id)
         else:
             profile = BirthProfile(
                 user_id=user_id,
@@ -189,23 +177,15 @@ async def save_profile(request: Request):
                 timezone=location["timezone"]
             )
             db.add(profile)
-            print("CREATING NEW PROFILE")
         db.commit()
         db.refresh(profile)
-
-        print("PROFILE SAVED OK")
-        print("PROFILE ID:", profile.id)
-        print("BIRTH DATE:", profile.birth_date)
-        print("BIRTH TIME:", profile.birth_time)
         generated_chart = (
            ChartService.generate_and_save_chart(
                profile.id
            )
         )
-        print(
-           "GENERATED CHART:",
-            generated_chart.id
-        )
+        if not generated_chart:
+            raise RuntimeError("Chart generation returned no result")
       
         return HTMLResponse("""
         <div class="p-8 text-center">
@@ -228,17 +208,29 @@ async def save_profile(request: Request):
         </div>
         """)
 
-    except Exception as e:
+    except Exception:
 
         db.rollback()
 
-        print("SAVE ERROR:", str(e))
+        logger.exception("Birth profile save or chart generation failed")
 
         return HTMLResponse(
-            f"<h2>Database Error</h2><pre>{str(e)}</pre>",
+            """
+            <div class="p-8 text-center">
+                <h2 class="text-2xl font-semibold text-white">
+                    We couldn't create your blueprint
+                </h2>
+                <p class="mt-4 text-slate-300">
+                    Your details are safe. Please try again in a moment.
+                </p>
+                <a href="/onboarding/review"
+                   class="mt-6 inline-block rounded-xl bg-cyan-300 px-6 py-3 text-slate-950">
+                    Try again
+                </a>
+            </div>
+            """,
             status_code=500
         )
 
     finally:
         db.close()
-    

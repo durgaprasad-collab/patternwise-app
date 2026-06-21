@@ -91,7 +91,4 @@ Return:
             system_prompt,
             user_prompt
         )
-        print("\n===== AI RESPONSE =====")
-        print(response)
-        print("=======================\n")
         return json.loads(response)

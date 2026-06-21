@@ -15,12 +15,6 @@ class ProfileBuilder:
     def build(cls, chart_json):
 
         asc_sign = chart_json["ascendant"]["sign"]
-        print("ASC SIGN:", repr(asc_sign))
-
-        print("GIFTS:", ASCENDANT_GIFTS.get(asc_sign))
-        print("EDGES:", ASCENDANT_GROWTH_EDGES.get(asc_sign))
-        print("POTENTIAL:", ASCENDANT_POTENTIAL.get(asc_sign))
-        print("DRAINS:", ASCENDANT_DRAINS.get(asc_sign))
         asc_nakshatra = chart_json["ascendant"]["nakshatra"]
 
         moon_sign = chart_json["planets"]["Moon"]["sign"]
